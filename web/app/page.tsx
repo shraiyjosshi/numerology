@@ -5,15 +5,10 @@ import { NAV_GROUPS } from "@/lib/nav";
 const TOOL_DESCRIPTIONS: Record<string, string> = {
   "/name": "Reduce a name to its single-digit root.",
   "/phone": "Search numbers aligned to your roots.",
-  "/vehicles": "Plate candidates aligned to your roots.",
-  "/pricing": "Prices whose digits reinforce your roots.",
-  "/colors": "Color palette paired with each digit.",
-  "/timing": "Days and dates tuned to your roots.",
 };
 
 export default function Home() {
   const calculate = NAV_GROUPS.find((g) => g.label === "Calculate")!.items.filter((i) => !i.soon);
-  const learn = NAV_GROUPS.find((g) => g.label === "Learn")!.items.filter((i) => !i.soon);
 
   return (
     <StudioPage>
@@ -34,25 +29,6 @@ export default function Home() {
               <span className="studio-tile-desc">
                 {TOOL_DESCRIPTIONS[item.href] ?? ""}
               </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <hr className="studio-divider" />
-
-      <section>
-        <h2 className="font-serif text-xl text-[#2A2A2A] mb-3">Learn</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          {learn.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="studio-tile"
-              data-soon={item.soon ? "true" : undefined}
-            >
-              {item.soon && <span className="studio-tile-soon">Soon</span>}
-              <span className="studio-tile-title">{item.label}</span>
             </Link>
           ))}
         </div>

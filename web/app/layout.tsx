@@ -22,7 +22,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ?? "http://localhost:3000";
 
 const title = "Numerology — Vedic numerology tools";
-const description = "Vedic numerology tools: name and phone numbers, vehicle plates, pricing, colors, and timing.";
+const description = "Vedic numerology tools: name and phone numbers.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
