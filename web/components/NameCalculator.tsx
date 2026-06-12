@@ -108,11 +108,16 @@ export default function NameCalculator() {
                       </div>
                     </div>
                     <div className="flex items-baseline gap-2.5 sm:gap-3 whitespace-nowrap shrink-0">
+                      {/* Chaldean reads the compound number as primary; Vedic
+                          the reduced root. Swap which one is the large figure. */}
                       <div className="text-xs text-[#6B6B6B] tabular-nums">
-                        sum <span className="text-[#2A2A2A] font-medium">{w.total}</span>
+                        {system === "chaldean" ? "root" : "sum"}{" "}
+                        <span className="text-[#2A2A2A] font-medium">
+                          {system === "chaldean" ? w.root : w.total}
+                        </span>
                       </div>
                       <div className="font-serif text-2xl sm:text-3xl text-[#B05818] tabular-nums leading-none">
-                        {w.root}
+                        {system === "chaldean" ? w.total : w.root}
                       </div>
                     </div>
                   </div>
