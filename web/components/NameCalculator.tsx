@@ -1,10 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { nameNumber } from "@/lib/numerology";
+import { nameNumber, type NumerologySystem } from "@/lib/numerology";
+
+const SYSTEMS: { value: NumerologySystem; label: string }[] = [
+  { value: "vedic", label: "Vedic" },
+  { value: "chaldean", label: "Chaldean" },
+];
 
 export default function NameCalculator() {
   const [name, setName] = useState("");
+  const [system, setSystem] = useState<NumerologySystem>("chaldean");
 
   const result = useMemo(() => {
     const trimmed = name.trim();
@@ -13,13 +19,43 @@ export default function NameCalculator() {
     const full = words.join(" ");
     return {
       full,
-      total: nameNumber(full),
-      perWord: words.map((w) => ({ word: w, ...nameNumber(w) })),
+      total: nameNumber(full, system),
+      perWord: words.map((w) => ({ word: w, ...nameNumber(w, system) })),
     };
-  }, [name]);
+  }, [name, system]);
 
   return (
     <div className="space-y-5 sm:space-y-6">
+      <div>
+        <span className="eyebrow block mb-2">System</span>
+        <div
+          role="radiogroup"
+          aria-label="Numerology system"
+          className="inline-flex w-full sm:w-auto rounded-xl border border-[#EADFCB] bg-[#FDF8F1] p-1"
+        >
+          {SYSTEMS.map((s) => {
+            const active = system === s.value;
+            return (
+              <button
+                key={s.value}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => setSystem(s.value)}
+                className={
+                  "flex-1 sm:flex-none px-4 sm:px-6 py-1.5 rounded-lg text-sm font-medium transition-colors " +
+                  (active
+                    ? "bg-[#B05818] text-white shadow-sm"
+                    : "text-[#6B6B6B] hover:text-[#2A2A2A]")
+                }
+              >
+                {s.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div>
         <label className="eyebrow block mb-2" htmlFor="name-input">
           Your Name

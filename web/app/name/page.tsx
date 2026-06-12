@@ -3,7 +3,7 @@ import { StudioPage, StudioPageHeader } from "@/components/StudioPage";
 
 export const metadata = {
   title: "Name — Numerology",
-  description: "Compute the Vedic numerological value of a name, with the per-letter breakdown.",
+  description: "Compute the Vedic or Chaldean numerological value of a name, with the per-letter breakdown.",
 };
 
 export default function NamePage() {

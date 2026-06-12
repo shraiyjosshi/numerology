@@ -1,15 +1,40 @@
-export const LETTER_VALUES: Record<string, number> = {
+export type NumerologySystem = "vedic" | "chaldean";
+
+// Vedic and Chaldean charts are identical for 24 of 26 letters; they differ
+// only at C (2 vs 3) and X (6 vs 5). Chaldean assigns no 9 (9 is left sacred).
+export const VEDIC_LETTER_VALUES: Record<string, number> = {
   A: 1, B: 2, C: 2, D: 4, E: 5, F: 8, G: 3, H: 5, I: 1,
   J: 1, K: 2, L: 3, M: 4, N: 5, O: 7, P: 8, Q: 1, R: 2,
   S: 3, T: 4, U: 6, V: 6, W: 6, X: 6, Y: 1, Z: 7,
 };
 
+export const CHALDEAN_LETTER_VALUES: Record<string, number> = {
+  A: 1, B: 2, C: 3, D: 4, E: 5, F: 8, G: 3, H: 5, I: 1,
+  J: 1, K: 2, L: 3, M: 4, N: 5, O: 7, P: 8, Q: 1, R: 2,
+  S: 3, T: 4, U: 6, V: 6, W: 6, X: 5, Y: 1, Z: 7,
+};
+
+export const SYSTEM_LETTER_VALUES: Record<
+  NumerologySystem,
+  Record<string, number>
+> = {
+  vedic: VEDIC_LETTER_VALUES,
+  chaldean: CHALDEAN_LETTER_VALUES,
+};
+
+// Back-compat alias for callers predating the system toggle.
+export const LETTER_VALUES = VEDIC_LETTER_VALUES;
+
 export type LetterPair = { letter: string; value: number };
 
-export function letterBreakdown(name: string): LetterPair[] {
+export function letterBreakdown(
+  name: string,
+  system: NumerologySystem = "vedic"
+): LetterPair[] {
+  const values = SYSTEM_LETTER_VALUES[system];
   return Array.from(name.toUpperCase())
-    .filter((c) => c in LETTER_VALUES)
-    .map((c) => ({ letter: c, value: LETTER_VALUES[c] }));
+    .filter((c) => c in values)
+    .map((c) => ({ letter: c, value: values[c] }));
 }
 
 export function reduceToRoot(n: number): number {
@@ -25,8 +50,11 @@ export type NameResult = {
   pairs: LetterPair[];
 };
 
-export function nameNumber(name: string): NameResult {
-  const pairs = letterBreakdown(name);
+export function nameNumber(
+  name: string,
+  system: NumerologySystem = "vedic"
+): NameResult {
+  const pairs = letterBreakdown(name, system);
   const total = pairs.reduce((s, p) => s + p.value, 0);
   return { total, root: reduceToRoot(total), pairs };
 }
